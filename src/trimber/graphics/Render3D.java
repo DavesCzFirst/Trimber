@@ -17,6 +17,11 @@ public class Render3D extends Render {
     private final double renderDistance = 10000;
 
 
+    private Vector3D[] transVertices = {new Vector3D(), new Vector3D(), new Vector3D()};
+    private Vector3D[] viewedVertices = {new Vector3D(), new Vector3D(), new Vector3D()};
+    private Triangle3D projectedTri = new Triangle3D(new Vector3D(), new Vector3D(), new Vector3D());
+
+
     public Render3D(int width, int height) {
         super(width, height);
         zBuffer = new double[width * height] ;
@@ -40,16 +45,15 @@ public class Render3D extends Render {
         lightDirection.normalize();
         Vector3D cameraPos = new Vector3D(game.player.posX, game.player.posY + game.player.height, game.player.posZ); // 1 unit up
 
-// Define where it is looking
-        //Vector3D target = new Vector3D(0.0f, 0.0f, 1.0f);
 
+        //start pos
         Vector3D lookDirection = new Vector3D(0.0f, 0.0f, 1.0f);
 
         // Looking forward
         Mat4 matCameraPitch = Mat4.rotationX(game.player.pitch);
         Mat4 matCameraYaw = Mat4.rotationY(game.player.yaw);
-        lookDirection = matCameraPitch.multiplyVec3D(lookDirection);
-        lookDirection = matCameraYaw.multiplyVec3D(lookDirection);
+        matCameraPitch.multiplyVec3D(lookDirection, lookDirection);
+         matCameraYaw.multiplyVec3D(lookDirection, lookDirection);
 
         Vector3D target = cameraPos.add(lookDirection);
 
@@ -79,26 +83,21 @@ public class Render3D extends Render {
             // 3. Now loop through the triangles of this specific object
             for (Triangle3D tri : obj.mesh.triangles) {
 
-                Vector3D[] transVertices = new Vector3D[3];
-                Vector3D[] viewedVertices = new Vector3D[3];
+
 
                 for (int i = 0; i < 3; i++) {
 
-                    // A. Move from Object Space -> World Space
-                    // THIS REPLACES YOUR OLD MANUAL ROTATION AND TRANSLATION!
-                    transVertices[i] = matModel.multiplyVec3D(tri.cor[i]);
 
-                    // B. Move from World Space -> View Space (The Camera)
-                    viewedVertices[i] = matView.multiplyVec3D(transVertices[i]);
+                    matModel.multiplyVec3D(tri.cor[i], transVertices[i]);
+
+                    // Move from World Space -> View Space (The Camera)
+                    matView.multiplyVec3D(transVertices[i], viewedVertices[i]);
 
 
                 }
                 if (viewedVertices[0].z < 0.1f || viewedVertices[1].z < 0.1f || viewedVertices[2].z < 0.1f) {
                     continue; // Skip the rest of the loop and move to the next triangle
                 }
-                // ==========================================
-                // PHASE 2: VISIBILITY (CULLING)
-                // ==========================================
                 Vector3D line1 = viewedVertices[1].subtract(viewedVertices[0]);
                 Vector3D line2 = viewedVertices[2].subtract(viewedVertices[0]);
 
@@ -116,25 +115,18 @@ public class Render3D extends Render {
                     if (illumination < 0.0f) {
                         illumination = 0.0f;
                     }
-                    // ==========================================
-                    // PHASE 3: PROJECTION (Only if visible!)
-                    // ==========================================
-                    Triangle3D projectedTri = new Triangle3D();
 
                     for (int i = 0; i < 3; i++) {
-                        Vector3D projectedVertex = game.player.mat.multiplyVec3D(viewedVertices[i]);
+                        game.player.mat.multiplyVec3D(viewedVertices[i], projectedTri.cor[i]);
 
-                        projectedVertex.x = (projectedVertex.x + 1.0f) * 0.5f * render.width;
-                        projectedVertex.y = ( 1.0f - projectedVertex.y) * 0.5f * render.height;
-                        projectedVertex.z = viewedVertices[i].z;
+                        projectedTri.cor[i].x = (projectedTri.cor[i].x + 1.0f) * 0.5f * render.width;
+                        projectedTri.cor[i].y = (1.0f - projectedTri.cor[i].y) * 0.5f * render.height;
+                        projectedTri.cor[i].z = viewedVertices[i].z;
 
-                        projectedTri.cor[i] = projectedVertex;
+
                     }
 
-                    // ==========================================
-                    // PHASE 4: DRAWING
-                    // ==========================================
-                    // Notice how these are now INSIDE the "if" statement!
+                    //drawing
                     render.drawTriangle(projectedTri.cor[0], projectedTri.cor[1], projectedTri.cor[2], obj);
                     //render.drawLine(new Point((int) projectedTri.cor[0].x, (int) projectedTri.cor[0].y), new Point((int) projectedTri.cor[1].x, (int) projectedTri.cor[1].y), Color.BLACK);
                     //render.drawLine(new Point((int) projectedTri.cor[1].x, (int) projectedTri.cor[1].y), new Point((int) projectedTri.cor[2].x, (int) projectedTri.cor[2].y), Color.RED);

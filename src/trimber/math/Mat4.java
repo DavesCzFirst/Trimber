@@ -27,22 +27,27 @@ public class Mat4 {
         return result;
     }
 
-    public Vector3D multiplyVec3D(Vector3D input) {
-        Vector3D result = new Vector3D();
-        result.x = (input.x * m[0][0]) + (input.y * m[1][0]) + (input.z * m[2][0]) + (1 * m[3][0]);
-        result.y = (input.x * m[0][1]) + (input.y * m[1][1]) + (input.z * m[2][1]) + (1 * m[3][1]);
-        result.z = (input.x * m[0][2]) + (input.y * m[1][2]) + (input.z * m[2][2]) + (1 * m[3][2]);
-        float w = (input.x * m[0][3]) + (input.y * m[1][3]) + (input.z * m[2][3]) + (1 * m[3][3]);
+    public void multiplyVec3D(Vector3D input, Vector3D output) {
+        float inX = input.x;
+        float inY = input.y;
+        float inZ = input.z;
+        float inU = input.u;
+        float inV = input.v;
+
+
+        output.x = (inX * m[0][0]) + (inY * m[1][0]) + (inZ * m[2][0]) + m[3][0];
+        output.y = (inX * m[0][1]) + (inY * m[1][1]) + (inZ * m[2][1]) + m[3][1];
+        output.z = (inX * m[0][2]) + (inY * m[1][2]) + (inZ * m[2][2]) + m[3][2];
+        float w  = (inX * m[0][3]) + (inY * m[1][3]) + (inZ * m[2][3]) + m[3][3];
+
         if( w != 0.0f) {
-            result.x = result.x / w;
-            result.y = result.y / w;
-            result.z = result.z / w;
+            output.x = output.x / w;
+            output.y = output.y / w;
+            output.z = output.z / w;
         }
+        output.u = inU;
+        output.v = inV;
 
-        result.u = input.u;
-        result.v = input.v;
-
-        return result;
     }
 
     public static Mat4 rotationZ(float angle){

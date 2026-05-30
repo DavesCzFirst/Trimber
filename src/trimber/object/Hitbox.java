@@ -29,6 +29,15 @@ public class Hitbox {
         this.maxZ += z;
     }
 
+    public void moveHitbox(Vector3D offset){
+        this.minX += offset.x;
+        this.maxX += offset.x;
+        this.minY += offset.y;
+        this.maxY += offset.y;
+        this.minZ += offset.z;
+        this.maxZ += offset.z;
+    }
+
     public Hitbox getSweptBox(float moveX, float moveY, float moveZ) {
         return new Hitbox(
                 Math.min(this.minX, this.minX + moveX),
