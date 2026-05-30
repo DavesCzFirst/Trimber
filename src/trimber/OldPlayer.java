@@ -4,7 +4,7 @@ import trimber.math.Mat4;
 import trimber.object.Collidable;
 import trimber.object.Hitbox;
 
-public class Player implements Collidable {
+public class OldPlayer implements Collidable {
     public float posX = 0;
     public float posY = 0;
     public float posZ = 0;
@@ -20,7 +20,7 @@ public class Player implements Collidable {
     public Hitbox hitbox;
 
 
-    public Player(float height) {
+    public OldPlayer(float height) {
         this.height = height;
         mat = Mat4.makeProjectionMatrix(90.0f, (float) Display.WIDTH /Display.HEIGHT, 0.1f, 1000.0f);
         this.width = 0.8f;
@@ -28,7 +28,7 @@ public class Player implements Collidable {
         this.hitbox = new Hitbox(-width/2, 0f, -length/2, width/2, height, length/2);
     }
 
-    public Player() {
+    public OldPlayer() {
         mat = Mat4.makeProjectionMatrix(90.0f, (float) Display.WIDTH /Display.HEIGHT, 0.1f, 1000.0f);
         this.height = 0;
         this.width = 0.8f;

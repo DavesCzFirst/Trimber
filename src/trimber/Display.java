@@ -11,16 +11,10 @@ import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
-import java.util.ArrayList;
 import javax.swing.JFrame;
-import trimber.graphics.Render;
+
 import trimber.graphics.Screen;
 import trimber.input.InputHandler;
-import trimber.math.Mat4;
-import trimber.math.Mesh;
-import trimber.math.Triangle3D;
-import trimber.math.Vector3D;
-import trimber.object.*;
 
 
 /**
@@ -35,7 +29,7 @@ public class Display extends Canvas implements Runnable {
     private boolean running = false;
     private Screen screen;
     private Game game;
-    private Player player;
+    private OldPlayer player;
     private BufferedImage img;
     private int[] pixels ;
     private InputHandler input;
@@ -49,7 +43,7 @@ public class Display extends Canvas implements Runnable {
         setMinimumSize(size);
         setMaximumSize(size);
         screen = new Screen(WIDTH, HEIGHT);
-        player = new Player(1.96f);
+        player = new OldPlayer(1.96f);
         game = new Game(player);
         game.loadObjects();
         img = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);

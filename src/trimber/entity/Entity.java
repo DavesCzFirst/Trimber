@@ -14,4 +14,18 @@ public class Entity {
     public Vector3D scale = new Vector3D(1.0f, 1.0f, 1.0f);
 
     private List<Attribute> attributes = new ArrayList<>();
+
+    public void addAttribute(Attribute a) {
+        this.attributes.add(a);
+        a.entity = this;
+    }
+
+    public <T extends Attribute> T getAttribute(Class<T> attributeClass) {
+        for (Attribute a : attributes) {
+            if (attributeClass.isInstance(a)) {
+                return attributeClass.cast(a);
+            }
+        }
+        return null;
+    }
 }

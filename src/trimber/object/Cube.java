@@ -1,7 +1,6 @@
 package trimber.object;
 
 import trimber.Object;
-import trimber.Player;
 import trimber.graphics.Color;
 import trimber.math.Mesh;
 import trimber.math.Triangle3D;

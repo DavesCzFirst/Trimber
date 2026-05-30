@@ -8,9 +8,10 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import trimber.entity.Entity;
+import trimber.entity.attributes.HitboxAttribute;
 import trimber.graphics.Color;
 import trimber.input.Controller;
-import trimber.math.Mat4;
 import trimber.math.Vector3D;
 import trimber.object.Cube;
 import trimber.object.Plane;
@@ -22,12 +23,15 @@ import trimber.object.Plane;
 public class Game {
     public int time;
     public Controller controls;
-    public Player player;
+    public OldPlayer player;
     public List<Object> objects;
     public GamePhysics engine;
+    public List<Entity> entities = new ArrayList<>();
+    public List<HitboxAttribute> collidables = new ArrayList<>();
+    public List<move>
 
     
-    public Game(Player player){
+    public Game(OldPlayer player){
         controls = new Controller();
         this.objects = new ArrayList<Object>();
         this.player = player;
