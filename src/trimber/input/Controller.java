@@ -71,6 +71,9 @@ public class Controller {
             a.setOffset(movementOffset);
             InputHandler.MouseXMove = 0.0f;
             InputHandler.MouseYMove = 0.0f;
+            /*System.out.println(movementOffset.x);
+            System.out.println(movementOffset.y);
+            System.out.println(movementOffset.z);*/
         }
 
 

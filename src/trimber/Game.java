@@ -37,7 +37,6 @@ public class Game {
         controls = new Controller();
         this.objects = new ArrayList<Object>();
         this.player = player;
-        addEntity(new Player());
         engine = new GamePhysics();
 
     }
@@ -91,6 +90,11 @@ public class Game {
 
         if(move != null){
             moveables.add(move);
+        }
+
+        ControlAttribute control = e.getAttribute(ControlAttribute.class);
+        if(control != null){
+            controlables.add(control);
         }
 
     }
