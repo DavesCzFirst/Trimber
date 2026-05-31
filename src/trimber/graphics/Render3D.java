@@ -6,6 +6,8 @@ package trimber.graphics;
 
 import trimber.Game;
 import trimber.Object;
+import trimber.entity.Entity;
+import trimber.entity.attributes.TextureAttribute;
 import trimber.math.Mat4;
 import trimber.math.Triangle3D;
 import trimber.math.Vector3D;
@@ -43,15 +45,15 @@ public class Render3D extends Render {
     public void drawObjects(Render render, Game game){
         Vector3D lightDirection = new Vector3D(0.0f, 0.0f, -1.0f);
         lightDirection.normalize();
-        Vector3D cameraPos = new Vector3D(game.player.posX, game.player.posY + game.player.height, game.player.posZ); // 1 unit up
+        Vector3D cameraPos = new Vector3D(game.renderEntity.entity.position.x, game.renderEntity.entity.position.y + game.renderEntity.height, game.renderEntity.entity.position.z); // 1 unit up
 
 
         //start pos
         Vector3D lookDirection = new Vector3D(0.0f, 0.0f, 1.0f);
 
         // Looking forward
-        Mat4 matCameraPitch = Mat4.rotationX(game.player.pitch);
-        Mat4 matCameraYaw = Mat4.rotationY(game.player.yaw);
+        Mat4 matCameraPitch = Mat4.rotationX(game.renderEntity.entity.rotation.y);
+        Mat4 matCameraYaw = Mat4.rotationY(game.renderEntity.entity.rotation.z);
         matCameraPitch.multiplyVec3D(lookDirection, lookDirection);
          matCameraYaw.multiplyVec3D(lookDirection, lookDirection);
 
@@ -65,14 +67,14 @@ public class Render3D extends Render {
 // 2. Invert it to create the VIEW MATRIX!
         Mat4 matView = Mat4.makeQuickInverse(matCamera);
 
-        for (Object obj : game.objects) {
+        for (TextureAttribute texture : game.renderables) {
 
             // 1. Build the Translation, Rotation, and Scale matrices for THIS object
-            Mat4 matScale = Mat4.makeScale(obj.scale);
-            Mat4 matRotX = Mat4.rotationX(obj.rotation.x);
-            Mat4 matRotY = Mat4.rotationY(obj.rotation.y);
-            Mat4 matRotZ = Mat4.rotationZ(obj.rotation.z);
-            Mat4 matTrans = Mat4.makeTranslation(obj.position.x, obj.position.y, obj.position.z);
+            Mat4 matScale = Mat4.makeScale(texture.entity.scale.x);
+            Mat4 matRotX = Mat4.rotationX(texture.entity.rotation.x);
+            Mat4 matRotY = Mat4.rotationY(texture.entity.rotation.y);
+            Mat4 matRotZ = Mat4.rotationZ(texture.entity.rotation.z);
+            Mat4 matTrans = Mat4.makeTranslation(texture.entity.position.x, texture.entity.position.y, texture.entity.position.z);
 
             // 2. Combine them into the MODEL MATRIX! (Scale -> Rotate -> Translate)
             Mat4 matModel = matScale.multiplyMat(matRotX);
@@ -81,7 +83,7 @@ public class Render3D extends Render {
             matModel = matModel.multiplyMat(matTrans);
 
             // 3. Now loop through the triangles of this specific object
-            for (Triangle3D tri : obj.mesh.triangles) {
+            for (Triangle3D tri : texture.mesh.triangles) {
 
 
 
@@ -117,7 +119,7 @@ public class Render3D extends Render {
                     }
 
                     for (int i = 0; i < 3; i++) {
-                        game.player.mat.multiplyVec3D(viewedVertices[i], projectedTri.cor[i]);
+                        game.renderEntity.cameraMat.multiplyVec3D(viewedVertices[i], projectedTri.cor[i]);
 
                         projectedTri.cor[i].x = (projectedTri.cor[i].x + 1.0f) * 0.5f * render.width;
                         projectedTri.cor[i].y = (1.0f - projectedTri.cor[i].y) * 0.5f * render.height;
@@ -127,7 +129,7 @@ public class Render3D extends Render {
                     }
 
                     //drawing
-                    render.drawTriangle(projectedTri.cor[0], projectedTri.cor[1], projectedTri.cor[2], obj);
+                    render.drawTriangle(projectedTri.cor[0], projectedTri.cor[1], projectedTri.cor[2], texture);
                     //render.drawLine(new Point((int) projectedTri.cor[0].x, (int) projectedTri.cor[0].y), new Point((int) projectedTri.cor[1].x, (int) projectedTri.cor[1].y), Color.BLACK);
                     //render.drawLine(new Point((int) projectedTri.cor[1].x, (int) projectedTri.cor[1].y), new Point((int) projectedTri.cor[2].x, (int) projectedTri.cor[2].y), Color.RED);
                     //render.drawLine(new Point((int) projectedTri.cor[2].x, (int) projectedTri.cor[2].y), new Point((int) projectedTri.cor[0].x, (int) projectedTri.cor[0].y), Color.BLUE);

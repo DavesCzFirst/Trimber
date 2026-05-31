@@ -6,10 +6,18 @@ import trimber.object.EntitiyHitbox;
 import trimber.object.Hitbox;
 
 public class HitboxAttribute extends Attribute implements IMoveable {
-    Hitbox hitbox;
+    public Hitbox hitbox;
 
     public HitboxAttribute(float width, float height, float depth) {
         this.hitbox = new EntitiyHitbox(width, height, depth);
+
+
+    }
+
+    @Override
+    public void onEntityLoad() {
+
+        //
         applyMove(entity.position);
     }
 
@@ -18,4 +26,6 @@ public class HitboxAttribute extends Attribute implements IMoveable {
         hitbox.moveHitbox(offset);
 
     }
+
+
 }

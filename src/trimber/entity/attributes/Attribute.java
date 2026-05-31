@@ -5,5 +5,7 @@ import trimber.entity.Entity;
 public class Attribute {
     public Entity entity;
 
+    public void onEntityLoad(){
 
+    }
 }

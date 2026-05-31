@@ -1,29 +1,25 @@
-package trimber.object;
+package trimber.entity;
 
-import trimber.Object;
+import trimber.entity.attributes.HitboxAttribute;
+import trimber.entity.attributes.TextureAttribute;
 import trimber.graphics.Color;
 import trimber.math.Mesh;
 import trimber.math.Triangle3D;
 import trimber.math.Vector3D;
 
-public class Cube extends Object{
+import java.awt.*;
 
+public class CubeEntity extends Entity {
 
-    public Cube() {
-        super(tempName(1), new Vector3D(0f,0f,0f), new Vector3D(0,0,0), 1);
-        this.color = Color.WHITE;
+    public CubeEntity() {
+        addAttribute(new HitboxAttribute(1.0f, 1.0f, 1.0f ));
+        addAttribute(new TextureAttribute(cubeMeshCreator(1.0f), Color.WHITE));
 
     }
 
-    public Cube(Vector3D position, int color) {
-        super(tempName(1), position, new Vector3D(0,0,0), 1);
-        this.color = color;
-        hitbox = new Hitbox(position.x, position.y, position.z, position.x + scale, position.y + scale, position.z +scale);
-    }
-
-    private static Mesh tempName(int size){
+    private static Mesh cubeMeshCreator(float size){
         Mesh cubeMesh = new Mesh();
-        
+
 // SOUTH FACE (Front)
         cubeMesh.triangles.add(new Triangle3D(new Vector3D(0.0f * size, 0.0f * size, 0.0f * size), new Vector3D(0.0f * size, 1.0f * size, 0.0f * size), new Vector3D(1.0f * size, 1.0f * size, 0.0f * size)));
         cubeMesh.triangles.add(new Triangle3D(new Vector3D(0.0f * size, 0.0f * size, 0.0f * size), new Vector3D(1.0f * size, 1.0f * size, 0.0f * size), new Vector3D(1.0f * size, 0.0f * size, 0.0f * size)));
@@ -50,11 +46,5 @@ public class Cube extends Object{
 
 
         return cubeMesh;
-    }
-
-
-
-    public Cube(Vector3D position, Mesh mesh) {
-        super(position, mesh);
     }
 }

@@ -84,4 +84,14 @@ public class Hitbox {
         }
     }
 
+    public Hitbox getHitboxShrinkY(){
+
+        return new Hitbox(minX,
+                minY +0.02f,
+                minZ,
+                maxX,
+                maxY - 0.02f,
+                maxZ);
+    }
+
 }

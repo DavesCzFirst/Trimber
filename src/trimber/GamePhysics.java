@@ -1,5 +1,7 @@
 package trimber;
 
+import trimber.entity.attributes.HitboxAttribute;
+import trimber.entity.attributes.MoveAttribute;
 import trimber.object.Hitbox;
 
 public class GamePhysics {
@@ -10,71 +12,78 @@ public class GamePhysics {
         checkForCollision(game);
     }
 
+
+
+
     void checkForCollision(Game game) {
-        Hitbox h;
-        h= game.player.getHitboxShrinkY();
         
-        
-        for (Object ob : game.objects) {
-            Hitbox edited = h.rayCast(game.player.moveX, 0, 0);
-            float time;
-            if (edited.intersect(ob.hitbox)) {
-
-                if (game.player.moveX > 0) {
-                    time = (ob.hitbox.minX - game.player.hitbox.maxX - security) / game.player.moveX;
-                } else if (game.player.moveX < 0) {
-                    time = (ob.hitbox.maxX - game.player.hitbox.minX + security) / game.player.moveX;
-                }
-                else{
-                    time = 1.0f;
-                }
-                if (time < 0){
-                    time = 0;
-                }
-
-                if (time <= 1) {
-                    game.player.moveX = game.player.moveX * time;
-
-                }
-            }
-
-            edited = h.rayCast(game.player.moveX, game.player.moveY, 0);
-            if (edited.intersect(ob.hitbox)) {
-                if (game.player.moveY > 0) {
-                    time = (ob.hitbox.minY - game.player.hitbox.maxY - security) / game.player.moveY;
-                } else if (game.player.moveY < 0) {
-                    time = (ob.hitbox.maxY - game.player.hitbox.minY + security) / game.player.moveY;
-                }
-                else{
-                    time = 1.0f;
-                }
-                if (time < 0){
-                    time = 0;
-                }
-                if (time <= 1) {
-                    game.player.moveY = game.player.moveY * time;
-                }
-            }
-
-            edited = h.rayCast(game.player.moveX, game.player.moveY, game.player.moveZ);
-            if (edited.intersect(ob.hitbox)) {
-
-                if (game.player.moveZ > 0) {
-                    time = (ob.hitbox.minZ - game.player.hitbox.maxZ - security) / game.player.moveZ;
-                } else if (game.player.moveZ < 0) {
-                    time = (ob.hitbox.maxZ - game.player.hitbox.minZ + security) / game.player.moveZ;
-                }else{
-                    time = 1.0f;
-                }
-                if (time < 0){
-                    time = 0;
-                }
-                if (time <= 1) {
-                    game.player.moveZ = game.player.moveZ * time;
-
-                }
 
 
+
+        Hitbox shrinkHitbox;
+
+        for(HitboxAttribute hm : game.collideMoveables) {
+            shrinkHitbox = hm.hitbox.getHitboxShrinkY();
+            MoveAttribute moveA = hm.entity.getAttribute(MoveAttribute.class);
+            for (HitboxAttribute ob : game.collidables) {
+                Hitbox edited = shrinkHitbox.rayCast(moveA.moveOffset.x, 0, 0);
+                float time;
+                if (edited.intersect(ob.hitbox)) {
+
+                    if (moveA.moveOffset.x > 0) {
+                        time = (ob.hitbox.minX - hm.hitbox.maxX - security) / moveA.moveOffset.x;
+                    } else if (moveA.moveOffset.x < 0) {
+                        time = (ob.hitbox.maxX - hm.hitbox.minX + security) / moveA.moveOffset.x;
+                    } else {
+                        time = 1.0f;
+                    }
+                    if (time < 0) {
+                        time = 0;
+                    }
+
+                    if (time <= 1) {
+                        moveA.moveOffset.x = moveA.moveOffset.x * time;
+
+                    }
+                }
+
+                edited = shrinkHitbox.rayCast(moveA.moveOffset.x, moveA.moveOffset.y, 0);
+                if (edited.intersect(ob.hitbox)) {
+                    if (moveA.moveOffset.y > 0) {
+                        time = (ob.hitbox.minY - hm.hitbox.maxY - security) / moveA.moveOffset.y;
+                    } else if (moveA.moveOffset.y < 0) {
+                        time = (ob.hitbox.maxY - hm.hitbox.minY + security) / moveA.moveOffset.y;
+                    } else {
+                        time = 1.0f;
+                    }
+                    if (time < 0) {
+                        time = 0;
+                    }
+                    if (time <= 1) {
+                        moveA.moveOffset.y = moveA.moveOffset.y * time;
+                    }
+                }
+
+                edited = shrinkHitbox.rayCast(moveA.moveOffset.x, moveA.moveOffset.y, moveA.moveOffset.z);
+                if (edited.intersect(ob.hitbox)) {
+
+                    if (moveA.moveOffset.z > 0) {
+                        time = (ob.hitbox.minZ - hm.hitbox.maxZ - security) / moveA.moveOffset.z;
+                    } else if (moveA.moveOffset.z < 0) {
+                        time = (ob.hitbox.maxZ - hm.hitbox.minZ + security) / moveA.moveOffset.z;
+                    } else {
+                        time = 1.0f;
+                    }
+                    if (time < 0) {
+                        time = 0;
+                    }
+                    if (time <= 1) {
+                        moveA.moveOffset.z = moveA.moveOffset.z * time;
+
+                    }
+
+
+                }
             }
         }
 

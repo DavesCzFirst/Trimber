@@ -9,32 +9,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 import trimber.entity.Entity;
-import trimber.entity.attributes.HitboxAttribute;
-import trimber.graphics.Color;
+import trimber.entity.attributes.*;
+import trimber.entity.entities.Player;
 import trimber.input.Controller;
-import trimber.math.Vector3D;
-import trimber.object.Cube;
-import trimber.object.Plane;
 
 /**
  *
  * @author david
  */
 public class Game {
+    private EntityLoader eLoader = new EntityLoader();
     public int time;
     public Controller controls;
     public OldPlayer player;
+    public CameraViewAttribute renderEntity;
     public List<Object> objects;
     public GamePhysics engine;
     public List<Entity> entities = new ArrayList<>();
     public List<HitboxAttribute> collidables = new ArrayList<>();
-    public List<move>
+    public List<HitboxAttribute> collideMoveables = new ArrayList<>();
+    public List<TextureAttribute> renderables = new ArrayList<>();
+    public List<MoveAttribute> moveables = new ArrayList<>();
+    public List<ControlAttribute> controlables = new ArrayList<>();
 
     
     public Game(OldPlayer player){
         controls = new Controller();
         this.objects = new ArrayList<Object>();
         this.player = player;
+        addEntity(new Player());
         engine = new GamePhysics();
 
     }
@@ -58,12 +61,37 @@ public class Game {
     }
 
     public void loadObjects(){
-        this.objects.add(new Cube(new Vector3D(10f,10f,10f) , Color.randomColor()));
-        this.objects.add(new Cube(new Vector3D(-10f,10f,10f) , Color.randomColor()));
-        this.objects.add(new Cube(new Vector3D(1f,0f,1f), Color.RED));
-        this.objects.add(new Cube(new Vector3D(1f,1f,1f), Color.BLUE));
-        this.objects.add(new Cube(new Vector3D(0f,1f,100f), Color.BLUE));
-        this.objects.add(new Plane(10,10));
+        addEntity(new Player());
+        renderEntity = entities.getLast().getAttribute(CameraViewAttribute.class);
+        eLoader.loadObjects(this);
+    }
+
+
+
+    public void addEntity(Entity e){
+        entities.add(e);
+        HitboxAttribute hitbox = e.getAttribute(HitboxAttribute.class);
+        MoveAttribute move = e.getAttribute(MoveAttribute.class);
+        if (hitbox != null) {
+            if(move != null){
+                collideMoveables.add(hitbox);
+            }
+            else{
+                collidables.add(hitbox);
+            }
+
+        }
+
+        TextureAttribute texture = e.getAttribute(TextureAttribute.class);
+        if (texture != null) {
+            renderables.add(texture);
+        }
+
+
+        if(move != null){
+            moveables.add(move);
+        }
+
     }
 
 }

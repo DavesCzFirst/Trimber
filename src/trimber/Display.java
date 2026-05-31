@@ -34,7 +34,7 @@ public class Display extends Canvas implements Runnable {
     private int[] pixels ;
     private InputHandler input;
     private int fps = 0;
-    //public Cube cubeMesh = new Cube(new Vector3D(10f, 0f, 10f));
+    //public OldCube cubeMesh = new OldCube(new Vector3D(10f, 0f, 10f));
 
 
     public Display() {

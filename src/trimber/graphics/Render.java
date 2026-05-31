@@ -5,6 +5,7 @@
 package trimber.graphics;
 
 import trimber.Object;
+import trimber.entity.attributes.TextureAttribute;
 import trimber.math.Vector3D;
 
 import java.awt.*;
@@ -87,14 +88,14 @@ public class Render {
         }
     }
 
-    public void drawTriangle(Vector3D a, Vector3D b, Vector3D c, Object ob) {
+    public void drawTriangle(Vector3D a, Vector3D b, Vector3D c, TextureAttribute at) {
         /*drawLine(render,a,b);
         drawLine(render,b,c);
         drawLine(render,a,c);*/
         //System.out.println("A: "+ a + " B: "+ b+ " C: "+ c);
-        Texture texture = ob.texture;
+        Texture texture = at.texture;
         if (texture == null) {
-            texture = new Texture(ob.color);
+            texture = new Texture(at.color);
         }
 
         int minX = (int) Math.min(Math.min(a.x, b.x), c.x);

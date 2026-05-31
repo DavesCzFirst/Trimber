@@ -14,5 +14,15 @@ public class MovementAttribute extends Attribute implements IMoveable {
 
     }
 
+    @Override
 
+    public void onEntityLoad() {
+        MoveAttribute a = entity.getAttribute(MoveAttribute.class);
+        if(a == null){
+            entity.addAttribute(new MoveAttribute());
+            a = entity.getAttribute(MoveAttribute.class);
+        }
+        a.attributes.add(this);
+
+    }
 }

@@ -5,7 +5,9 @@ import trimber.math.Vector3D;
 public class RotationAttribute extends Attribute{
     
     //public Vector3D rotationOffset = new Vector3D(0,0,0);
-    
+    public float rotationSpeed;
+
+
     public void doRotation(Vector3D rotationOffset){
         rotateY(rotationOffset.y);
         rotateZ(rotationOffset.z);

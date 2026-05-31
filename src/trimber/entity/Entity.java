@@ -10,14 +10,19 @@ public class Entity {
     public int id;
     public String name;
     public Vector3D position = new Vector3D();
-    public Vector3D rotation;
+    public Vector3D rotation = new Vector3D(0,0,0);
     public Vector3D scale = new Vector3D(1.0f, 1.0f, 1.0f);
 
     private List<Attribute> attributes = new ArrayList<>();
 
     public void addAttribute(Attribute a) {
+        if (this.getAttribute(a.getClass()) != null) {
+            return;
+        }
+
         this.attributes.add(a);
         a.entity = this;
+        a.onEntityLoad();
     }
 
     public <T extends Attribute> T getAttribute(Class<T> attributeClass) {
@@ -27,5 +32,16 @@ public class Entity {
             }
         }
         return null;
+    }
+
+    public <T> List<T> getAllAttributesByInterface(Class<T> interfaceClass) {
+        List<T> found = new ArrayList<>();
+
+        for (Attribute a : attributes) {
+            if (interfaceClass.isInstance(a)) {
+                found.add(interfaceClass.cast(a));
+            }
+        }
+        return found;
     }
 }
