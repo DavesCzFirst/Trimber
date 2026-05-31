@@ -1,4 +1,4 @@
-package trimber.entity.attributes;
+/*package trimber.entity.attributes;
 
 import trimber.entity.interfaces.IMoveable;
 import trimber.math.Vector3D;
@@ -25,4 +25,4 @@ public class MovementAttribute extends Attribute implements IMoveable {
         a.attributes.add(this);
 
     }
-}
+}*/

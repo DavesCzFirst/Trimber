@@ -1,7 +1,9 @@
 package trimber;
 
+import trimber.entity.attributes.Attribute;
 import trimber.entity.attributes.HitboxAttribute;
 import trimber.entity.attributes.MoveAttribute;
+import trimber.entity.interfaces.IMoveable;
 import trimber.object.Hitbox;
 
 public class GamePhysics {
@@ -90,5 +92,16 @@ public class GamePhysics {
     }
 
 
+    public void applyMove(Game game) {
+        for(MoveAttribute a: game.moveables){
+            for(IMoveable b: a.entity.getAllAttributesByInterface(IMoveable.class)){
+                b.applyMove(a.moveOffset);
+            }
+            a.moveOffset.x = 0;
+            a.moveOffset.y = 0;
+            a.moveOffset.z = 0;
+
+        }
+    }
 
 }

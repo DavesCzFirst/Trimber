@@ -15,6 +15,10 @@ public class Entity {
 
     private List<Attribute> attributes = new ArrayList<>();
 
+    public Entity(Vector3D position){
+        this.position = position;
+    }
+
     public void addAttribute(Attribute a) {
         if (this.getAttribute(a.getClass()) != null) {
             return;

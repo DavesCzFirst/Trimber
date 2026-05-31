@@ -55,7 +55,8 @@ public class Game {
         
         controls.tick(this, forward, back, left, right, turnLeft, turnRight);
         engine.doStuff(this);
-        player.applyMove();
+        engine.applyMove(this);
+        System.out.println(renderEntity.entity.position.x);
 
         
     }

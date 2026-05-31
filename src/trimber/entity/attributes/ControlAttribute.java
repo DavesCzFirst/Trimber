@@ -7,7 +7,7 @@ public class ControlAttribute extends Attribute {
 
     @Override
     public void onEntityLoad() {
-        entity.addAttribute(new MovementAttribute());
+        entity.addAttribute(new MoveAttribute());
     }
 
     public void setOffset(Vector3D offset) {

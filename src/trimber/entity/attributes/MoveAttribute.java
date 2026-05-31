@@ -6,7 +6,7 @@ import trimber.math.Vector3D;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MoveAttribute extends Attribute {
+public class MoveAttribute extends Attribute implements IMoveable{
     public float walkSpeed;
     public List<IMoveable> attributes = new ArrayList<IMoveable>();
 
@@ -21,6 +21,12 @@ public class MoveAttribute extends Attribute {
     public MoveAttribute() {
         this.walkSpeed = 0.1f;
         this.moveOffset = new Vector3D(0,0,0);
+
+    }
+
+    @Override
+    public void applyMove(Vector3D offset) {
+        Vector3D.add(entity.position, offset);
 
     }
 

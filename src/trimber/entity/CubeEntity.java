@@ -12,6 +12,7 @@ import java.awt.*;
 public class CubeEntity extends Entity {
 
     public CubeEntity() {
+        super(new Vector3D(0,0,10f));
         addAttribute(new HitboxAttribute(1.0f, 1.0f, 1.0f ));
         addAttribute(new TextureAttribute(cubeMeshCreator(1.0f), Color.WHITE));
 
