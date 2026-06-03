@@ -26,7 +26,7 @@ public class MoveAttribute extends Attribute implements IMoveable{
 
     @Override
     public void applyMove(Vector3D offset) {
-        Vector3D.add(entity.position, offset);
+        Vector3D.add(offset, entity.position);
 
     }
 

@@ -14,6 +14,7 @@ public class Player extends Entity {
         addAttribute(new HitboxAttribute(0.8f, 1.96f, 0.8f));
         addAttribute(new CameraViewAttribute());
         addAttribute(new ControlAttribute());
+        addAttribute(new RotationAttribute());
 
     }
 }

@@ -26,6 +26,17 @@ import trimber.Display;
 public class InputHandler implements KeyListener, MouseListener, MouseMotionListener, FocusListener{
     
     public boolean[] key = new boolean[68836];
+    public boolean leftClick = false;
+    public boolean leftPressed = false;
+    public boolean rightClick = false;
+    public boolean rightPressed = false;
+    public boolean isMouseLocked = true;
+    public Point currentMousePos = new Point();
+
+
+
+
+
     public static float MouseXMove = 0;
     public static float MouseYMove = 0;
     private Point perviousMousePos = new Point(0,0);
@@ -37,6 +48,7 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
     public InputHandler(Display display) {
         
         this.display = display;
+
     }
     
     
@@ -71,12 +83,22 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
 
     @Override
     public void mousePressed(MouseEvent e) {
-        //throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (e.getButton() == MouseEvent.BUTTON1) {
+            leftClick = true;
+        }
+        if (e.getButton() == MouseEvent.BUTTON3) {
+            rightClick = true;
+        }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        //throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (e.getButton() == MouseEvent.BUTTON1) {
+            leftClick = false;
+        }
+        if (e.getButton() == MouseEvent.BUTTON3) {
+            rightClick = false;
+        }
     }
 
     @Override
@@ -96,58 +118,42 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        /*Point currentMousePos = e.getPoint();
-
-        // 1. THE TRAP DOOR: If the mouse is exactly in the middle,
-        // it means the Robot put it there. DO NOTHING!
-        if (currentMousePos.x == MID.x && currentMousePos.y == MID.y) {
-            // Reset the move variables so we don't keep spinning when we stop Moving the mouse
-            MouseXMove = 0;
-            MouseYMove = 0;
-            return;
-        }
-
         try {
             Robot robot = new Robot();
+            currentMousePos = e.getPoint();
+            if (isMouseLocked) {
+                if (ignoreNextMove) {
+                    ignoreNextMove = false; // We caught it! Reset the flag.
+                    return; // STOP running! Ignore this event completely!
+                }
 
-            // 2. Calculate the delta (how far the mouse moved from the center)
-            MouseXMove = (MID.x - currentMousePos.x) * SENSITIVITY;
-            MouseYMove = (MID.y - currentMousePos.y) * SENSITIVITY;
 
-            // 3. Move the mouse back to the absolute screen center
-            int centerX = display.getLocationOnScreen().x + (display.getWidth() / 2);
-            int centerY = display.getLocationOnScreen().y + (display.getHeight() / 2);
+                MouseXMove = (currentMousePos.x - MID.x) * SENSITIVITY;
+                MouseYMove = (currentMousePos.y - MID.y) * SENSITIVITY;
+                int centerX = display.getLocationOnScreen().x + (display.getWidth() / 2);
+                int centerY = display.getLocationOnScreen().y + (display.getHeight() / 2);
+                ignoreNextMove = true;
+                robot.mouseMove(centerX, centerY);
 
-            robot.mouseMove(centerX, centerY);
-
-        } catch (AWTException er) {
-            System.out.println(er);
-        }*/
-        if (ignoreNextMove) {
-            ignoreNextMove = false; // We caught it! Reset the flag.
-            return; // STOP running! Ignore this event completely!
-        }
-
-        try {
-            Robot robot = new Robot();
-            Point currentMousePos = e.getPoint();
-
-            // 3. Calculate movement (Notice I flipped them to current - MID for standard FPS feel)
-            MouseXMove = (currentMousePos.x - MID.x) * SENSITIVITY;
-            MouseYMove = (currentMousePos.y - MID.y) * SENSITIVITY;
-
-            int centerX = display.getLocationOnScreen().x + (display.getWidth() / 2);
-            int centerY = display.getLocationOnScreen().y + (display.getHeight() / 2);
-
-            // 4. CRITICAL: We are about to use the Robot.
-            // Tell the trap door to activate for the next frame!
-            ignoreNextMove = true;
-
-            robot.mouseMove(centerX, centerY);
-
+            }
+            else{
+                if(currentMousePos.x<0){
+                    robot.mouseMove(display.getLocationOnScreen().x, currentMousePos.y);
+                } else if (currentMousePos.x > display.getWidth()) {
+                    robot.mouseMove(display.getWidth()+display.getLocationOnScreen().x, currentMousePos.y);
+                }
+                currentMousePos = e.getPoint();
+                if(currentMousePos.y<0){
+                    robot.mouseMove(currentMousePos.x, display.getLocationOnScreen().y);
+                } else if (currentMousePos.y > display.getHeight()) {
+                    robot.mouseMove(currentMousePos.x, display.getHeight()+display.getLocationOnScreen().y);
+                }
+            }
         } catch (AWTException er) {
             System.out.println(er);
         }
+
+
         /*
         Point currentMousePos = e.getPoint();
         

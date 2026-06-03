@@ -25,6 +25,10 @@ public class Display extends Canvas implements Runnable {
     public static final int WIDTH = 1080;
     public static final int HEIGHT = 720;
     public static final String TITLE = "Trimber";
+
+    public State gameState = State.MENU;
+    private Menu uiMenu = new Menu();
+
     private Thread thread;
     private boolean running = false;
     private Screen screen;
@@ -34,6 +38,8 @@ public class Display extends Canvas implements Runnable {
     private int[] pixels ;
     private InputHandler input;
     private int fps = 0;
+
+
     //public OldCube cubeMesh = new OldCube(new Vector3D(10f, 0f, 10f));
 
 
@@ -124,7 +130,11 @@ public class Display extends Canvas implements Runnable {
     }
     
     private void tick() {
-        game.tick(input.key);
+        if (gameState == State.MENU){
+
+        }
+
+        game.tick(input);
     }
     
     private void render() {
@@ -133,10 +143,16 @@ public class Display extends Canvas implements Runnable {
             createBufferStrategy(3);
             return;
         }
-        
-        screen.render(game);
+        if(gameState == State.GAME){
+            screen.render(game);
+            System.arraycopy(screen.pixels, 0, pixels, 0, WIDTH * HEIGHT);
+        }
+        if(gameState == State.MENU){
 
-        System.arraycopy(screen.pixels, 0, pixels, 0, WIDTH * HEIGHT); 
+        }
+
+
+
         Graphics g = bs.getDrawGraphics();
         g.drawImage(img, 0, 0, WIDTH,HEIGHT, null);
         g.setFont(new Font("Verdana", 0, 50));

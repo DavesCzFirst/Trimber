@@ -12,6 +12,7 @@ import trimber.entity.Entity;
 import trimber.entity.attributes.*;
 import trimber.entity.entities.Player;
 import trimber.input.Controller;
+import trimber.input.InputHandler;
 
 /**
  *
@@ -31,6 +32,7 @@ public class Game {
     public List<TextureAttribute> renderables = new ArrayList<>();
     public List<MoveAttribute> moveables = new ArrayList<>();
     public List<ControlAttribute> controlables = new ArrayList<>();
+    public List<ClickAttribute> clickables = new ArrayList<>();
 
     
     public Game(OldPlayer player){
@@ -43,16 +45,11 @@ public class Game {
 
 
     
-    public void tick(boolean key[]){
+    public void tick(InputHandler inputHandler){
         time++;
-        boolean forward = key[KeyEvent.VK_W];
-        boolean back = key[KeyEvent.VK_S];
-        boolean left = key[KeyEvent.VK_A];
-        boolean right = key[KeyEvent.VK_D];
-        boolean turnLeft = key[KeyEvent.VK_LEFT];
-        boolean turnRight = key[KeyEvent.VK_RIGHT];
+
         
-        controls.tick(this, forward, back, left, right, turnLeft, turnRight);
+        controls.tick(this, inputHandler);
         engine.doStuff(this);
         engine.applyMove(this);
         System.out.println(renderEntity.entity.position.x);
@@ -96,6 +93,12 @@ public class Game {
         if(control != null){
             controlables.add(control);
         }
+
+        ClickAttribute click = e.getAttribute(ClickAttribute.class);
+        if(click != null){
+            clickables.add(click);
+        }
+
 
     }
 

@@ -6,21 +6,23 @@ package trimber.input;
 
 import trimber.Game;
 import trimber.entity.Entity;
+import trimber.entity.attributes.ClickAttribute;
 import trimber.entity.attributes.ControlAttribute;
 import trimber.entity.attributes.MoveAttribute;
 import trimber.entity.attributes.RotationAttribute;
 import trimber.math.Vector3D;
+import trimber.object.Hitbox;
 
 /**
  *
  * @author david
  */
 public class Controller {
-    public double x, z, rotation, xa, za, rotationa;
+
     private Vector3D rotationOffset = new Vector3D();
     private Vector3D movementOffset = new Vector3D();
     
-    public void tick(Game game, boolean forward, boolean back, boolean left, boolean right, boolean turnLeft, boolean turnRight){
+    public void tick(Game game, InputHandler input){
         for(ControlAttribute a: game.controlables){
             float xMove = 0;
             float zMove = 0;
@@ -28,13 +30,6 @@ public class Controller {
             RotationAttribute a1 = a.entity.getAttribute(RotationAttribute.class);
             if(a1!= null){
                 float rotationSpeed = a1.rotationSpeed;
-                if (turnLeft){
-                    rotationa -= rotationSpeed;
-                }
-                if (turnRight){
-                    rotationa += rotationSpeed;
-                }
-                //rotationa -= InputHandler.MouseXMove * rotationSpeed;
                 rotationOffset.x = 0;
                 rotationOffset.y = InputHandler.MouseYMove;
                 rotationOffset.z = -InputHandler.MouseXMove;
@@ -44,20 +39,20 @@ public class Controller {
 
 
             float walkSpeed = a.entity.getAttribute(MoveAttribute.class).walkSpeed;
-            if (forward){
+            if (input.key[Keybinds.FORWARD]){
                 xMove += (float) Math.sin(-a.entity.rotation.z) * walkSpeed;
                 zMove += (float) Math.cos(-a.entity.rotation.z) * walkSpeed;
             }
-            if (back){
+            if (input.key[Keybinds.BACK]){
                 xMove -= (float) Math.sin(-a.entity.rotation.z) * walkSpeed;
                 zMove -= (float) Math.cos(-a.entity.rotation.z) * walkSpeed;
             }
-            if (left){
+            if (input.key[Keybinds.LEFT]){
                 xMove -= (float) Math.sin(-a.entity.rotation.z + (Math.PI / 2)) * walkSpeed;
                 zMove -= (float) Math.cos(-a.entity.rotation.z + (Math.PI / 2)) * walkSpeed;
 
             }
-            if (right){
+            if (input.key[Keybinds.RIGHT]){
                 xMove += (float) Math.sin(-a.entity.rotation.z + (Math.PI / 2)) * walkSpeed;
                 zMove += (float) Math.cos(-a.entity.rotation.z + (Math.PI / 2)) * walkSpeed;
             }
@@ -74,10 +69,21 @@ public class Controller {
             /*System.out.println(movementOffset.x);
             System.out.println(movementOffset.y);
             System.out.println(movementOffset.z);*/
+
+
+
+
+            //actions---------------------------------------------------------------
+            if(input.rightClick){
+
+                for(ClickAttribute cA: game.clickables){
+
+                }
+            }
         }
 
 
-/*
+        /*
         //System.out.println(game.player.posX);
         //System.out.println(game.cam.m);
         za += (zMove * Math.cos(rotation) - xMove * Math.sin(rotation)) * walkSpeed;
@@ -94,4 +100,11 @@ public class Controller {
         //System.out.println(rotation);
                 */
     }
+
+    private Hitbox getSeeVision(){
+        return new Hitbox(0,0,0,0,0,0);
+    }
+
+
+
 }

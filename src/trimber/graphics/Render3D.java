@@ -139,7 +139,7 @@ public class Render3D extends Render {
 
     }}
 
-
+    /*
     public void floor(Game game){
         
         double floorPosition = 10;
@@ -173,7 +173,7 @@ public class Render3D extends Render {
             }
             
         }
-    }
+    }*/
     
     public void renderDistanceLimiter(){
         for ( int i = 0; i < width * height; i++){
