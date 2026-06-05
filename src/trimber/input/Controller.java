@@ -75,10 +75,13 @@ public class Controller {
 
             //actions---------------------------------------------------------------
             if(input.rightClick){
-
-                for(ClickAttribute cA: game.clickables){
-
+                System.out.println("rightClick");
+                Entity e = game.mechanics.doRayCast(game, a.entity);
+                if(e != null){
+                    System.out.print(e);
+                    System.out.println("hitttt");
                 }
+
             }
         }
 
@@ -101,9 +104,7 @@ public class Controller {
                 */
     }
 
-    private Hitbox getSeeVision(){
-        return new Hitbox(0,0,0,0,0,0);
-    }
+
 
 
 

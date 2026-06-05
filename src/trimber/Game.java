@@ -26,6 +26,7 @@ public class Game {
     public CameraViewAttribute renderEntity;
     public List<Object> objects;
     public GamePhysics engine;
+    public GameMechanics mechanics;
     public List<Entity> entities = new ArrayList<>();
     public List<HitboxAttribute> collidables = new ArrayList<>();
     public List<HitboxAttribute> collideMoveables = new ArrayList<>();
@@ -37,9 +38,10 @@ public class Game {
     
     public Game(OldPlayer player){
         controls = new Controller();
-        this.objects = new ArrayList<Object>();
+        this.objects = new ArrayList<>();
         this.player = player;
         engine = new GamePhysics();
+        mechanics = new GameMechanics();
 
     }
 
@@ -52,7 +54,7 @@ public class Game {
         controls.tick(this, inputHandler);
         engine.doStuff(this);
         engine.applyMove(this);
-        System.out.println(renderEntity.entity.position.x);
+
 
         
     }

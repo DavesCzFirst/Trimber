@@ -30,7 +30,7 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
     public boolean leftPressed = false;
     public boolean rightClick = false;
     public boolean rightPressed = false;
-    public boolean isMouseLocked = true;
+    public boolean isMouseLocked = false;
     public Point currentMousePos = new Point();
 
 
@@ -113,8 +113,40 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        //throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+        try {
+            Robot robot = new Robot();
+            currentMousePos = e.getPoint();
+            if (isMouseLocked) {
+                if (ignoreNextMove) {
+                    ignoreNextMove = false; // We caught it! Reset the flag.
+                    return; // STOP running! Ignore this event completely!
+                }
+
+
+                MouseXMove = (currentMousePos.x - MID.x) * SENSITIVITY;
+                MouseYMove = (currentMousePos.y - MID.y) * SENSITIVITY;
+                int centerX = display.getLocationOnScreen().x + (display.getWidth() / 2);
+                int centerY = display.getLocationOnScreen().y + (display.getHeight() / 2);
+                ignoreNextMove = true;
+                robot.mouseMove(centerX, centerY);
+
+            }
+            else{
+                if(currentMousePos.x<0){
+                    robot.mouseMove(display.getLocationOnScreen().x, currentMousePos.y);
+                } else if (currentMousePos.x > display.getWidth()) {
+                    robot.mouseMove(display.getWidth()+display.getLocationOnScreen().x, currentMousePos.y);
+                }
+                currentMousePos = e.getPoint();
+                if(currentMousePos.y<0){
+                    robot.mouseMove(currentMousePos.x, display.getLocationOnScreen().y);
+                } else if (currentMousePos.y > display.getHeight()) {
+                    robot.mouseMove(currentMousePos.x, display.getHeight()+display.getLocationOnScreen().y);
+                }
+            }
+        } catch (AWTException er) {
+            System.out.println(er);
+        }    }
 
     @Override
     public void mouseMoved(MouseEvent e) {

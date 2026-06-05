@@ -1,4 +1,6 @@
-package trimber.object;
+package trimber.object.hitboxes;
+
+import trimber.object.Hitbox;
 
 public class EntitiyHitbox extends Hitbox {
     public EntitiyHitbox(float width, float height, float length) {

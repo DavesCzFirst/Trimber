@@ -2,6 +2,7 @@ package trimber.math;
 
 public class Triangle3D {
         public Vector3D[] cor = new Vector3D[3];
+        public Vector2D[] uv = new Vector2D[3];
 
         public Triangle3D(Vector3D a, Vector3D b, Vector3D c) {
                 this.cor[0] = a;

@@ -1,6 +1,6 @@
 package trimber;
 
-import trimber.entity.CubeEntity;
+import trimber.entity.entities.CubeEntity;
 
 public class EntityLoader {
     public void loadObjects(Game game){
@@ -11,5 +11,7 @@ public class EntityLoader {
         this.objects.add(new OldCube(new Vector3D(0f,1f,100f), Color.BLUE));
         this.objects.add(new Plane(10,10));*/
         game.addEntity(new CubeEntity());
+
+
     }
 }

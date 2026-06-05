@@ -4,8 +4,6 @@ public class Vector3D {
     public float  x;
     public float y;
     public float z;
-    public float u;
-    public float v;
 
     public Vector3D(float x, float y, float z) {
         this.z = z;
@@ -13,13 +11,11 @@ public class Vector3D {
         this.y = y;
     }
 
-    public Vector3D(float x, float y, float z, float u, float v) {
+    /*public Vector3D(float x, float y, float z) {
         this.z = z;
         this.x = x;
         this.y = y;
-        this.u = u;
-        this.v = v;
-    }
+    }*/
 
     public Vector3D() {
 
@@ -46,19 +42,19 @@ public class Vector3D {
     }
 
     public Vector3D add(Vector3D u){
-        return  new Vector3D(x+u.x, y+u.y, z + u.z, u.u, u.v);
+        return  new Vector3D(x+u.x, y+u.y, z + u.z);
     }
 
     public Vector3D subtract(Vector3D u){
-        return  new Vector3D(x-u.x, y-u.y, z - u.z, u.u, u.v);
+        return  new Vector3D(x-u.x, y-u.y, z - u.z);
     }
 
     public Vector3D multiply(float n){
-        return  new Vector3D(x* n, y * n, z * n, u, v);
+        return  new Vector3D(x* n, y * n, z * n);
     }
 
     public Vector3D divide(float n){
-        return  new Vector3D(x/ n, y / n, z / n, u, v);
+        return  new Vector3D(x/ n, y / n, z / n);
     }
 
     public float dotProduct(Vector3D u){
@@ -66,7 +62,7 @@ public class Vector3D {
     }
 
     public Vector3D crossProduct(Vector3D u){
-        return new Vector3D(y*u.z-z*u.y, z*u.x-x*u.z, x*u.y-y*u.x, u.u, u.v);
+        return new Vector3D(y*u.z-z*u.y, z*u.x-x*u.z, x*u.y-y*u.x);
     }
 
 }

@@ -13,6 +13,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import javax.swing.JFrame;
 
+import trimber.graphics.Color;
 import trimber.graphics.Screen;
 import trimber.input.InputHandler;
 
@@ -27,7 +28,7 @@ public class Display extends Canvas implements Runnable {
     public static final String TITLE = "Trimber";
 
     public State gameState = State.MENU;
-    private Menu uiMenu = new Menu();
+    private Menu menu = new Menu();
 
     private Thread thread;
     private boolean running = false;
@@ -131,10 +132,19 @@ public class Display extends Canvas implements Runnable {
     
     private void tick() {
         if (gameState == State.MENU){
-
+            if(input.leftClick) {
+                gameState = menu.onMouseClick(input);
+                input.leftClick = false;
+                if(gameState == State.GAME){
+                    input.isMouseLocked = true;
+                }
+            }
         }
 
-        game.tick(input);
+
+        if(gameState == State.GAME) {
+            game.tick(input);
+        }
     }
     
     private void render() {
@@ -147,14 +157,15 @@ public class Display extends Canvas implements Runnable {
             screen.render(game);
             System.arraycopy(screen.pixels, 0, pixels, 0, WIDTH * HEIGHT);
         }
-        if(gameState == State.MENU){
 
-        }
 
 
 
         Graphics g = bs.getDrawGraphics();
         g.drawImage(img, 0, 0, WIDTH,HEIGHT, null);
+        if(gameState == State.MENU){
+            menu.drawUI(g);
+        }
         g.setFont(new Font("Verdana", 0, 50));
         g.drawString(String.valueOf(fps), 50, 50);
         g.dispose();
